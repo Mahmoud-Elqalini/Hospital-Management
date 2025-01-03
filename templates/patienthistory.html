@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </head>
+  <body>
+    <nav class="navbar bg-body-secondary mb-4">
+      <div class="container-fluid">
+        <a href="{{ url_for('index') }}" class="navbar-brand"
+          >Hospital<i class="fa-solid fa-hospital fa-sm mx-2"></i>
+        </a>
+        <form class="" role="search">
+          <a href="doctor.html" class="btn btn-success me-5">Doctors</a>
+          <a href="patient.html" class="btn btn-success me-5">Patients</a>
+          <a href="patienthistory.html" class="btn btn-success me-5">Patient History</a>
+          <a href="doctor_schedule.html" class="btn btn-success me-5">Doctor Schedule</a>
+          <a href="appointment.html" class="btn btn-success me-5">Appointments</a>
+          <a href="diagnose.html" class="btn btn-success me-5">Diagnoses</a>
+        </form>
+      </div>
+    </nav>
+
+    <div class="fs-5">
+      <i class="fas fa-file-medical fa-3x"></i>
+      <i class="fas fa-file-medical fa-3x"></i>
+      <i class="fas fa-file-medical fa-3x"></i>
+    </div>
+    <!-- Flash message display -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alert-container d-flex justify-content-center">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show text-center" role="alert" style="max-width: 500px; width: 100%;">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+<!-- ################################################################################3 buttons ############################################################ -->
+ <!-- #############################################################ADD history ########################################################################################################################################### -->
+ <div class="d-flex justify-content-center">
+  <button type="button" class="btn btn-primary mx-4" data-bs-toggle="modal" data-bs-target="#addModal" data-bs-whatever="@mdo">Add Patient History</button>
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Patient History</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <!-- form body of add -->
+          <div class="modal-body">
+            <form id="history_form" action="/add_history" method="post">
+              <div class="mb-3">
+                <label for="selc-table">Entries</label>
+              </div>
+              <div class="input-group mb-3">
+                <!-- MH_id  -->
+                <div>
+                  <span class="input-group-text" id="basic-addon1">Medical History ID</span>
+                  <input type="number" id="MH_id" name="MH_id" class="form-control me-2" aria-label="Username" aria-describedby="basic-addon1" required>
+                </div>
+                <!-- surgeries Input -->
+                <div class="input-group mb-3">
+                  <span class="input-group-text" id="basic-addon3">Patient Surgeries</span>
+                  <input type="text" id="patient_surgeries" name="patient_surgeries" class="form-control me-2" aria-label="Username" aria-describedby="basic-addon3" required>
+                </div>
+                <!-- conditions Input -->
+                <div class="input-group mb-3">
+                  <span class="input-group-text" id="basic-addon3">Patient Conditions</span>
+                  <input type="text" id="patient_conditions" name="patient_conditions" class="form-control me-2" aria-label="Username" aria-describedby="basic-addon3" required>
+                </div>
+                <!-- patient medication -->
+                <div>
+                  <span class="input-group-text" id="basic-addon1">Patient Medications</span>
+                  <input type="text" id="patient_medication" name="patient_medication" class="form-control" aria-label="Username" aria-describedby="basic-addon1" required>
+                </div>
+                <!-- patient email input -->
+                <div class="input-group mb-3">
+                  <span class="input-group-text" id="basic-addon2">Patient Email</span>
+                  <input type="email" id="Patient_email" name="Patient_email" class="form-control me-2" aria-label="Email" aria-describedby="basic-addon2" required>
+                </div>
+              </div>
+              <!-- add button -->
+              <button type="submit" class="btn btn-primary" form="history_form">ADD</button>
+            </form>
+          </div>
+          <!-- close button -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- ###################################################################delete history############################################################################################################## -->
+<button class="btn btn-danger mx-4" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-whatever="@mdo">Delete Patient History</button>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Patient History</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <!-- form body of delete -->
+      <div class="modal-body">
+        <form id="delete_form" action="/delete_history" method="post">
+          <div class="mb-3">
+            <label for="selc-table">History To Be Deleted</label>
+          </div>
+          <!-- MH_id input -->
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">History ID</span>
+            <input type="number" id="history_id" name="history_id" class="form-control me-2" placeholder="Enter History ID" aria-label="Username" aria-describedby="basic-addon1" required>
+          </div>
+          <!-- delete button -->
+          <button type="submit" class="btn btn-primary" form="delete_form">DELETE</button>
+        </form>
+      </div>
+      <!-- close button -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- #############################################################################################search patient#################################################################################### -->
+<button class="btn btn-warning mx-4" type="button" data-bs-toggle="modal" data-bs-target="#searchModal" data-bs-whatever="@mdo">Search Patient History</button>
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- header name -->
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Search Patient History</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <!-- form body of search -->
+      <div class="modal-body">
+        <form id="search_form" action="/search_history" method="get">
+          <!-- lable -->
+          <div class="mb-3">
+            <label for="selc-table">Search By Patient Email</label>
+          </div>
+          <!-- search input -->
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Patient Email</span>
+            <input type="email" id="patient_email" name="patient_email" class="form-control me-2" aria-label="Username" aria-describedby="basic-addon1">
+          </div>
+          <!-- submit button -->
+          <button type="submit" class="btn btn-primary" form="search_form">Search</button>
+        </form>
+      </div>
+      <!-- close button -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- #################################################################################################################################################################################################################################################################### -->
+<div id="home" class="grid_container">
+<div class="accordion" id="accordionPanelsStayOpenExample">
+<div class="accordion-item ">
+  <h2 class="accordion-header">
+    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseSeven">
+      Patients Histories
+    </button>
+  </h2>
+  <div id="panelsStayOpen-collapseSeven" class="accordion-collapse collapse show">
+    <div class="accordion-body">
+      <table class="table table-responsive table-bordered table-hover table-dark">
+        <thead>
+          <tr>
+            <th scope="col">Medical History ID</th>
+            <th scope="col">Date And Time</th>
+            <th scope="col">Patient Condition</th>
+            <th scope="col">Patient Surgery</th>
+            <th scope="col">Patient Medication</th>
+            <th scope="col">Patient Email</th>
+          </tr>
+        </thead>
+        <tbody id="medicalhistory_table">
+          {% for history in histories %}
+          <tr>
+              <!--index = index in sql-->
+              <td>{{ history[0] }}</td>
+              <td>{{ history[1] }}</td>
+              <td>{{ history[2] }}</td>
+              <td>{{ history[3] }}</td>
+              <td>{{ history[4] }}</td>
+              <td>{{ history[5] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<script src="{{ url_for('static', filename='../static/js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

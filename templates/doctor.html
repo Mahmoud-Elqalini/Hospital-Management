@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doctors</title>
+    <!-- <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/all.min.css">
+    <link rel="stylesheet" href="../static/css/style.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </head>
+  <body>
+    <nav class="navbar bg-body-secondary mb-4">
+      <div class="container-fluid">
+        <a href="{{ url_for('index') }}" class="navbar-brand">
+          Hospital<i class="fa-solid fa-hospital fa-sm mx-2"></i>
+        </a>
+        <form class="" role="search">
+          <a href="doctor.html" class="btn btn-success me-5">Doctors</a>
+          <a href="patient.html" class="btn btn-success me-5">Patients</a>
+          <a href="patienthistory.html" class="btn btn-success me-5">Patient History</a>
+          <a href="doctor_schedule.html" class="btn btn-success me-5">Doctor Schedule</a>
+          <a href="appointment.html" class="btn btn-success me-5">Appointments</a>
+          <a href="diagnose.html" class="btn btn-success me-5">Diagnoses</a>
+        </form>
+      </div>
+    </nav>
+
+    <div class="fs-5">
+      <i class="fa-solid fa-user-md fa-3x mx-2"></i>
+      <i class="fa-solid fa-pen fa-xl mx-2"></i>
+      <i class="fa-solid fa-pen fa-xl mx-2"></i>
+    </div>
+    <!-- Flash message display -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="alert-container d-flex justify-content-center">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show text-center" role="alert" style="max-width: 500px; width: 100%;">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+<!-- ############################################################# 3 buttons ############################################################################################################################### -->
+
+<!-- #############################################################ADD DOCTOR ########################################################################################################################################### -->
+      <div class="d-flex justify-content-center">
+        <button type="button" class="btn btn-primary mx-4" data-bs-toggle="modal" data-bs-target="#addModal" data-bs-whatever="@mdo">Add Doctor</button>
+        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Doctor</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <!-- form body of add -->
+              <div class="modal-body">
+                <form id="doctor_form" action="/add_doctor" method="post">
+                  <div class="mb-3">
+                    <label for="selc-table">Entries</label>
+                  </div>
+                   <!-- Email Input -->
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">Email</span>
+                    <input type="email" id="doctor_email" name="doctor_email" class="form-control me-2" placeholder="Doctor Email" aria-label="Email" aria-describedby="basic-addon2" required>
+                  </div>
+                  <!-- Password Input -->
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon3">Password</span>
+                    <input type="password" id="doctor_password" name="doctor_password" class="form-control me-2" placeholder="Password" aria-label="Password" aria-describedby="basic-addon3" required>
+                  </div>
+                  <!-- name Input -->
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Name</span>
+                    <input type="text" id="doctor_name" name="doctor_name" class="form-control me-2" placeholder="Doctor Name" aria-label="Username" aria-describedby="basic-addon1">
+                  </div>
+                  <!-- gender Input -->
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Gender</span>
+                    <input type="text" id="doctor_gender" name="doctor_gender" class="form-control me-2" placeholder="Doctor Gender" aria-label="Username" aria-describedby="basic-addon1" required>
+                  </div>
+                  <!-- salary Input -->
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon3">Salary</span>
+                    <input type="number" id="doctor_salary" name="doctor_salary" class="form-control me-2" placeholder="Salary" aria-label="number" aria-describedby="basic-addon3" required>
+                  </div>
+                  <!-- add button -->
+                  <button type="submit" class="btn btn-primary" form="doctor_form">ADD</button>
+                </form>
+              </div>
+              <!-- close button -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+<!-- ###################################################################delete doctor############################################################################################################## -->
+      <button class="btn btn-danger mx-4" type="button" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-whatever="@mdo">Delete Doctor</button>
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Doctor</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <!-- form body of delete -->
+              <div class="modal-body">
+                <form id="delete_form" action="/delete_doctor" method="post">
+                  <div class="mb-3">
+                    <label for="selc-table">Doctor To Be Deleted</label>
+                  </div>
+                  <!-- Email Input -->
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon2">Email</span>
+                    <input type="email" id="doctor_email" name="doctor_email" class="form-control me-2" placeholder="Doctor Email" aria-label="Email" aria-describedby="basic-addon2" required>
+                  </div>
+                  <!-- delete button -->
+                  <button type="submit" class="btn btn-primary" form="delete_form">DELETE</button>
+                </form>
+              </div>
+              <!-- close button -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+<!-- #############################################################################################search doctor#################################################################################### -->
+      <button class="btn btn-warning mx-4" type="button" data-bs-toggle="modal" data-bs-target="#searchModal" data-bs-whatever="@mdo">Search Doctor</button>
+        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <!-- header name -->
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Search Doctor</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <!-- form body of search -->
+              <div class="modal-body">
+                <form id="search_form" action="/search_doctor" method="get">
+                  <!-- label -->
+                  <div class="mb-3">
+                    <label for="selc-table">Search By Name</label>
+                  </div>
+                  <!-- search input -->
+                  <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Name</span>
+                    <input type="text" id="doctor_name"  name="doctor_name" class="form-control me-2" placeholder="Doctor Name" aria-label="Username" aria-describedby="basic-addon1" required>
+                  </div>
+                  <!-- submit button -->
+                  <button type="submit" class="btn btn-primary" form="search_form">Search</button>
+                </form>
+              </div>
+              <!-- close button -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+<!-- #################################################################################################################################################################################################################################################################### -->
+    <div id="home" class="grid_container">
+      <div class="accordion" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true" aria-controls="panelsStayOpen-collapseThree">
+              Doctors
+            </button>
+          </h2>
+          <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+              <table class="table table-responsive table-bordered table-hover table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Doctor Email</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Salary</th>
+                  </tr>
+                </thead>
+                <tbody id="doctor_table">
+                  {% for doctor in doctors %}
+                  <tr>
+                    <!--index = index in sql-->
+                      <td>{{ doctor[0] }}</td>
+                      <td>{{ doctor[1] }}</td>
+                      <td>{{ doctor[3] }}</td>
+                      <td>{{ doctor[4] }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="{{ url_for('static', filename='../static/js/bootstrap.bundle.min.js') }}"></script>
+  </body>
+</html>

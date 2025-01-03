@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <!-- <link rel="stylesheet" href="../static/css/bootstrap.min.css"> -->
+    <!--<link rel="stylesheet" href="../static/css/all.min.css"> -->
+    <!-- <link rel="stylesheet" href="../static/css/style.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/all.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <body>
+    <nav class="navbar bg-body-secondary">
+      <div class="container-fluid">
+        <a href="{{ url_for('index') }}" class="navbar-brand"
+          >Hospital<i class="fa-solid fa-hospital fa-sm mx-2"></i>
+        </a>
+        <form class="" role="search">
+          <a href="doctor.html" class="btn btn-success me-5">Doctors</a>
+          <a href="patient.html" class="btn btn-success me-5">Patients</a>
+          <a href="patienthistory.html" class="btn btn-success me-5">Patient History</a>
+          <a href="doctor_schedule.html" class="btn btn-success me-5">Doctor Schedule</a>
+          <a href="appointment.html" class="btn btn-success me-5">Appointments</a>
+          <a href="diagnose.html" class="btn btn-success me-5">Diagnoses</a>
+        </form>
+      </div>
+    </nav>
+
+    <div id="home" class="position-relative grid_container home-container">
+      <div class="text-secondary position-absolute top-50 start-50 translate-middle">
+        <h1>Welcome to the hospital<i class="fa-solid fa-hospital fa-sm mx-2"></i></h1>
+      </div>
+    </div>
+    <script src="{{ url_for('static', filename='../static/js/bootstrap.bundle.min.js') }}"></script>
+    <script> function navigateTo(url) {window.location.href = url;}</script>
+  </body>
+</html>
